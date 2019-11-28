@@ -1,6 +1,6 @@
 package montp.web;
 
-import montp.data.model.security.User;
+import montp.data.model.User;
 import montp.services.UserService;
 
 import javax.annotation.PostConstruct;

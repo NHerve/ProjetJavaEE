@@ -1,4 +1,4 @@
-package montp.data.model.security;
+package montp.data.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

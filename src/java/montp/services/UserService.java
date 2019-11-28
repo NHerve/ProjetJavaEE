@@ -1,8 +1,8 @@
 package montp.services;
 
 import montp.data.dao.UserDAO;
-import montp.data.model.security.Group;
-import montp.data.model.security.User;
+import montp.data.model.Group;
+import montp.data.model.User;
 import montp.tools.Tools;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -25,28 +25,28 @@ public class UserService extends GenericService<User, UserDAO> {
         return dao.getGroup(groupname.toUpperCase().trim());
     }
 
-    public boolean isActive(User user) {
-        User u = dao.get(user.getId());
-        if (u == null) return false;
-        return u.getPassword() != null;
-    }
-
-    @Transactional
-    public void disable(User user) {
-        String password = user.getPassword();
-        user.setOldPassword(password);
-        user.setPassword(null);
-        super.update(user);
-    }
-
-    @Transactional
-    public void enable(User user) {
-        String password = user.getOldPassword();
-        user.setPassword(password);
-        user.setOldPassword(null);
-        super.update(user);
-    }
-
+//    public boolean isActive(User user) {
+//        User u = dao.get(user.getId());
+//        if (u == null) return false;
+//        return u.getPassword() != null;
+//    }
+//
+//    @Transactional
+//    public void disable(User user) {
+//        String password = user.getPassword();
+//        user.setOldPassword(password);
+//        user.setPassword(null);
+//        super.update(user);
+//    }
+//
+//    @Transactional
+//    public void enable(User user) {
+//        String password = user.getOldPassword();
+//        user.setPassword(password);
+//        user.setOldPassword(null);
+//        super.update(user);
+//    }
+//
     @Transactional
     public void insert(User user) {
         if (user.getGroups() == null) {
@@ -54,8 +54,8 @@ public class UserService extends GenericService<User, UserDAO> {
             groupes.add(getGroup("USER"));
             user.setGroups(groupes);
         }
-        user.setPassword(Tools.digestSHA256Hex(user.getPassword().trim()));
-        user.setUserName(user.getUserName().toLowerCase().trim());
+        user.setMdp(Tools.digestSHA256Hex(user.getMdp().trim()));
+        user.setAdresseMail(user.getAdresseMail().toLowerCase().trim());
         super.insert(user);
     }
 

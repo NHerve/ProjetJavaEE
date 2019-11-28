@@ -1,7 +1,7 @@
 package montp.data;
 
-import montp.data.model.security.Group;
-import montp.data.model.security.User;
+import montp.data.model.Group;
+import montp.data.model.User;
 import montp.services.UserService;
 
 import javax.annotation.PostConstruct;
@@ -30,7 +30,7 @@ public class Seeder {
             em.persist(groupUser);
             Group groupAdmin = new Group("ADMIN");
             em.persist(groupAdmin);
-            User userAdmin = new User("admin", "admin");
+            User userAdmin = new User("admin@admin.com", "admin","AYMES","Herve");
             List<Group> groupes = new ArrayList<>();
             groupes.add(groupUser);
             groupes.add(groupAdmin);

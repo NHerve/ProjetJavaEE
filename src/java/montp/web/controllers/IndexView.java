@@ -1,6 +1,6 @@
 package montp.web.controllers;
 
-import montp.data.model.security.User;
+import montp.data.model.User;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
