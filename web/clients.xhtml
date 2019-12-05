@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="./layout.xhtml">
+    <ui:define name="content">
+        <style type="text/css">
+            .ui-datatable {
+                margin-bottom: 25px
+            }
+
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+
+            .ui-button-text-only .ui-button-text {
+                padding: 0.3em 0.4em;
+            }
+
+            .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+                visibility: hidden;
+            }
+
+            .ui-filter-column .ui-column-customfilter .custom-filter {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .year-spinner input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        </style>
+        <h1>Clients</h1>
+
+        <p:tabView id="tabView">
+            <!--region viewClient-->
+            <p:tab title="Liste des clients" id="listClient">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:form id="tableClientForm">
+                        <p:growl id="messagesTable" autoUpdate="true"/>
+
+                        <p:dataTable id="tableClient"  value="#{clientCtrl.listClient}" editable="true" editMode="cell" var="client" type="ordered"
+                                     emptyMessage="aucun client" filteredValue="#{clientCtrl.listClientFiltre}"
+                                    widgetVar="client">
+
+                            <p:ajax event="cellEdit" listener="#{clientCtrl.onCellEdit}" />
+                            <f:facet name="header">
+                                <p:inputText id="globalFilter" onkeyup="PF('client').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            </f:facet>
+                            <p:column headerText="Nom" id="colNom" filterBy="#{client.nom}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{client.nom}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="modelInput" value="#{client.nom}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Nom contact" id="colNomContact" filterBy="#{client.nomContact}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{client.nomContact}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="inNomContact" value="#{client.nomContact}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Prenom" id="colPrenom" filterBy="#{client.prenom}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{client.prenom}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="inPrenom" value="#{client.prenom}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Mail" id="colMail" filterBy="#{client.adresseMail}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{client.adresseMail}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="inMail" value="#{client.adresseMail}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Telephone" id="colTel" filterBy="#{client.numTel}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{client.numTel}" /></f:facet>
+                                    <f:facet name="input"><p:inputMask id="inTel" value="#{client.numTel}" mask="99.99.99.99.99" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Adresse" id="colAdresse" filterBy="#{client.adresseMail}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{client.adressePostal}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="inAdresse" value="#{client.adressePostal}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="codePostal" id="colCodePostal" filterBy="#{client.codePostal}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{client.codePostal}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="inCodePostal" value="#{client.codePostal}"
+                                                                       style="width:100%"
+                                                                       validatorMessage="5 caractères attendu"
+                                                                       maxlength="5">
+                                        <f:validateLength minimum="5" maximum="5"/>
+                                    </p:inputText></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="ville" id="colVille" filterBy="#{client.ville}">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{client.ville}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="inVille" value="#{client.ville}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Delete" id="colDel">
+                                <p:commandButton action="#{clientCtrl.delete(client)}"
+                                                 process="@this"
+                                                 value="Delete"
+                                                 icon="pi pi-trash"
+                                                 style="margin-right:20px;"
+                                                 update="@form"/>
+                            </p:column>
+                        </p:dataTable >
+                    </h:form>
+                </h:panelGrid>
+            </p:tab>
+            <!--endregion-->
+            <!--region addClient-->
+            <p:tab title="Ajouter client">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:form>
+                        <p:growl id="messages2" autoUpdate="true"/>
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:outputLabel for="type" value="Type :" />
+                            <p:selectOneRadio id="type" value="#{clientCtrl.client.type}" unselectable="true" required="true">
+                                <f:selectItem itemLabel="Entreprise" itemValue="true" />
+                                <f:selectItem itemLabel="Personne" itemValue="false" />
+                            </p:selectOneRadio>
+                            <p:outputLabel for="nom" value="Nom :"/>
+                            <p:inputText id="nom"
+                                         value="#{clientCtrl.client.nom}"
+                                         size="40"
+                                         required="true"
+                                         requiredMessage="champ requis">
+                                <f:validateLength minimum="3"/>
+                            </p:inputText>
+                            <p:outputLabel for="prenom" value="Prenom ou contact :"/>
+                            <p:inputText id="prenom"
+                                         value="#{clientCtrl.client.nomContact}"
+                                         size="40"
+                                         required="true"
+                                         requiredMessage="champ requis">
+                                <f:validateLength minimum="3"/>
+                            </p:inputText>
+                            <p:outputLabel for="adresseMail" value="Adresse mail :"/>
+                            <p:inputTextarea id="adresseMail"
+                                             value="#{clientCtrl.client.adresseMail}"
+                                             size="40"
+                                             required="true"
+                                             requiredMessage="champ requi"
+                                             validatorMessage="3 caractères minimum">
+                                <f:validateLength minimum="3"/>
+                            </p:inputTextarea>
+                            <p:outputLabel for="adresse" value="Adresse :"/>
+                            <p:inputTextarea id="adresse"
+                                             value="#{clientCtrl.client.adressePostal}"
+                                             size="40"
+                                             required="true"
+                                             requiredMessage="champ requi"
+                                             validatorMessage="3 caractères minimum">
+                                <f:validateLength minimum="3"/>
+                            </p:inputTextarea>
+                            <p:outputLabel for="codePostal" value="Code postal :"/>
+                            <p:inputText id="codePostal"
+                                         value="#{clientCtrl.client.codePostal}"
+                                         size="40"
+                                         required="true"
+                                         requiredMessage="champ requi"
+                                         validatorMessage="5 caractères attendu"
+                                         maxlength="5">
+                                <f:validateLength minimum="5" maximum="5"/>
+                            </p:inputText>
+                            <p:outputLabel for="ville" value="Ville :"/>
+                            <p:inputText id="ville"
+                                         value="#{clientCtrl.client.ville}"
+                                         size="40"
+                                         required="true"
+                                         requiredMessage="champ requi"
+                                         validatorMessage="3 caractères minimum">
+                                <f:validateLength minimum="3"/>
+                            </p:inputText>
+                            <p:outputLabel for="tel" value="Telephone :" />
+                            <p:inputMask id="tel"
+                                         value="#{clientCtrl.client.numTel}"
+                                         mask="99.99.99.99.99"
+                                         required="true"/>
+                        </h:panelGrid>
+                        <p:commandButton value="Ajouter"
+                                         action="#{clientCtrl.add()}"
+                                         update="@form, tabView:tableClientForm"/>
+                    </h:form>
+                </h:panelGrid>
+            </p:tab>
+            <!--endregion-->
+        </p:tabView>
+
+    </ui:define>
+</ui:composition>
+

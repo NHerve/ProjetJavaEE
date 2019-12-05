@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="./layout.xhtml">
+    <ui:define name="content">
+        <h1>Liste des projets</h1>
+
+        <p:tabView id="tabViewProjet">
+            <!--region viewProjet-->
+            <p:tab title="Liste des projets" id="listClient">
+                <h:form>
+                        <p:growl id="messagesDisplay" autoUpdate="true"/>
+                    <p:selectBooleanCheckbox value="#{projetCtrl.boolDisplay}" itemLabel="Tout afficher">
+                        <p:ajax update="messagesDisplay,tabViewProjet:tableProjetForm:tableProjet" listener="#{projetCtrl.getStart}" />
+                    </p:selectBooleanCheckbox>
+                </h:form>
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:form id="tableProjetForm">
+                        <p:growl id="messagesTable" autoUpdate="true"/>
+
+                        <p:dataTable id="tableProjet"  value="#{projetCtrl.listProjet}" editable="true" editMode="cell" var="projet" type="ordered"
+                                     emptyMessage="aucun Projet">
+                            <p:ajax event="cellEdit" listener="#{projetCtrl.onCellEdit}" />
+                            <f:facet name="header">
+                                Projet
+                            </f:facet>
+                            <p:column headerText="Nom" id="colNom" >
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{projet.nom}" /></f:facet>
+                                    <f:facet name="input"><p:inputText id="inNom" value="#{projet.nom}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Client" id="colClient">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{projet.client}" /></f:facet>
+                                    <f:facet name="input"><p:selectOneMenu id="inClient"
+                                                                           value="#{projet.client}"
+                                                                           converter="client">
+                                        <f:selectItems value="#{projetCtrl.listClient}"/>
+                                    </p:selectOneMenu></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Statut" id="colStatut">
+                                <p:cellEditor>
+                                    <f:facet name="output"><p:selectOneMenu id="outStatut" value="#{projet.statut}" style="width:125px" disabled="true" >
+                                        <f:selectItem itemLabel="Prospect" itemValue="0" />
+                                        <f:selectItem itemLabel="Devis" itemValue="1" />
+                                        <f:selectItem itemLabel="Envoyé" itemValue="2" />
+                                        <f:selectItem itemLabel="Devis accepté" itemValue="3" />
+                                        <f:selectItem itemLabel="Démarré" itemValue="4" />
+                                        <f:selectItem itemLabel="Annulé" itemValue="5" />
+                                    </p:selectOneMenu></f:facet>
+                                    <f:facet name="input"><p:selectOneMenu id="inStatut" value="#{projet.statut}" style="width:125px" >
+                                        <f:selectItem itemLabel="Prospect" itemValue="0" />
+                                        <f:selectItem itemLabel="Devis" itemValue="1" />
+                                        <f:selectItem itemLabel="Envoyé" itemValue="2" />
+                                        <f:selectItem itemLabel="Devis accepté" itemValue="3" />
+                                        <f:selectItem itemLabel="Démarré" itemValue="4" />
+                                        <f:selectItem itemLabel="Annulé" itemValue="5" />
+                                    </p:selectOneMenu></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Delete" id="colDel">
+                                <p:commandButton action="#{projetCtrl.delete(projet)}"
+                                                 process="@this"
+                                                 value="Delete"
+                                                 icon="pi pi-trash"
+                                                 style="margin-right:20px;"
+                                                 update="@form"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </h:panelGrid>
+            </p:tab>
+            <!--endregion-->
+            <!--region addProjet-->
+            <p:tab title="Ajouter un projet">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:form>
+                        <p:growl id="messagesAddProjet" autoUpdate="true"/>
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:outputLabel for="nom" value="Nom du projet :"/>
+                            <p:inputText id="nom"
+                                         value="#{projetCtrl.projet.nom}"
+                                         size="40"
+                                         required="true"
+                                         requiredMessage="champ requis">
+                                <f:validateLength minimum="3"/>
+                            </p:inputText>
+                            <p:outputLabel for="client" value="Client :" />
+                            <p:selectOneMenu id="client"
+                                             value="#{projetCtrl.projet.client}"
+                                             converter="client">
+                                <f:selectItems value="#{projetCtrl.listClient}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel for="statut" value="Basic:" />
+                            <p:selectOneMenu id="statut" value="#{projetCtrl.projet.statut}" style="width:125px">
+                                <f:selectItem itemLabel="Prospect" itemValue="0" />
+                                <f:selectItem itemLabel="Devis" itemValue="1" />
+                                <f:selectItem itemLabel="Envoyé" itemValue="2" />
+                                <f:selectItem itemLabel="Devis accepté" itemValue="3" />
+                                <f:selectItem itemLabel="Démarré" itemValue="4" />
+                                <f:selectItem itemLabel="Annulé" itemValue="5" />
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                        <p:commandButton value="Ajouter"
+                                         action="#{projetCtrl.add()}"
+                                         update="@form,tabViewProjet:tableProjetForm"/>
+                    </h:form>
+                </h:panelGrid>
+            </p:tab>
+            <!--endregion-->
+        </p:tabView>
+    </ui:define>
+</ui:composition>
+

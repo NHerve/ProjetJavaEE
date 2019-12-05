@@ -14,6 +14,8 @@ public class Projet extends GenericEntity{
     private String nom;
     private Integer statut;
 
+    //region GetterSetter
+
     @Override
     public Long getId() {
         return id;
@@ -47,4 +49,5 @@ public class Projet extends GenericEntity{
     public void setStatut(Integer statut) {
         this.statut = statut;
     }
+//endregion
 }

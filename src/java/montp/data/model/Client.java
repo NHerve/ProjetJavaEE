@@ -14,6 +14,32 @@ public class Client extends GenericEntity{
     private String numTel;
     private String adressePostal;
     private String adresseMail;
+    private Boolean type;
+    private String codePostal;
+    private String ville;
+
+    @Override
+    public String toString() {
+        return  nom;
+    }
+
+    //region GetterSetter
+
+    public String getCodePostal() {
+        return codePostal;
+    }
+
+    public void setCodePostal(String codePostal) {
+        this.codePostal = codePostal;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
 
     @Override
     public Long getId() {
@@ -23,6 +49,14 @@ public class Client extends GenericEntity{
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getType() {
+        return type;
+    }
+
+    public void setType(Boolean type) {
+        this.type = type;
     }
 
     public String getNom() {
@@ -72,4 +106,5 @@ public class Client extends GenericEntity{
     public void setAdresseMail(String adresseMail) {
         this.adresseMail = adresseMail;
     }
+    //endregion
 }

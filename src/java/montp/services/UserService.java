@@ -17,6 +17,9 @@ public class UserService extends GenericService<User, UserDAO> {
         return dao.getUsers();
     }
 
+    public UserService() {
+    }
+
     public User getFromUsername(String username) {
         return dao.getFromUsername(username.toLowerCase().trim());
     }
@@ -25,28 +28,6 @@ public class UserService extends GenericService<User, UserDAO> {
         return dao.getGroup(groupname.toUpperCase().trim());
     }
 
-//    public boolean isActive(User user) {
-//        User u = dao.get(user.getId());
-//        if (u == null) return false;
-//        return u.getPassword() != null;
-//    }
-//
-//    @Transactional
-//    public void disable(User user) {
-//        String password = user.getPassword();
-//        user.setOldPassword(password);
-//        user.setPassword(null);
-//        super.update(user);
-//    }
-//
-//    @Transactional
-//    public void enable(User user) {
-//        String password = user.getOldPassword();
-//        user.setPassword(password);
-//        user.setOldPassword(null);
-//        super.update(user);
-//    }
-//
     @Transactional
     public void insert(User user) {
         if (user.getGroups() == null) {

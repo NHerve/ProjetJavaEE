@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "SECURITY_USER")
 public class User extends GenericEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -18,23 +19,26 @@ public class User extends GenericEntity{
     private String prenom;
     private Date dateNaissance;
     private String adressePostal;
+    private String codePostal;
+    private String ville;
     private String numTel;
     private Double chiffreAffaire;
     private Integer tauxCharge;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String mdp;
+    @Column(columnDefinition = "TEXT")
     private String oldMdp;
     @ManyToMany
     @JoinTable(name = "SECURITY_USER_GROUP",
-            joinColumns = @JoinColumn(name = "username",
-                    referencedColumnName = "username"),
+            joinColumns = @JoinColumn(name = "adresseMail",
+                    referencedColumnName = "adresseMail"),
             inverseJoinColumns = @JoinColumn(name = "groupname",
                     referencedColumnName = "groupname"))
     private List<Group> groups;
 
     public User(String mail,String password,String nom,String prenom){
-        adresseMail = mail;
-        mdp = password;
+        this.adresseMail = mail;
+        this.mdp = password;
         this.nom = nom;
         this.prenom = prenom;
     }
@@ -42,6 +46,26 @@ public class User extends GenericEntity{
     public User(){
 
     }
+
+    //region SetterGetter
+
+
+    public String getCodePostal() {
+        return codePostal;
+    }
+
+    public void setCodePostal(String codePostal) {
+        this.codePostal = codePostal;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
     public List<Group> getGroups() {
         return groups;
     }
@@ -139,4 +163,5 @@ public class User extends GenericEntity{
     public void setOldMdp(String oldMdp) {
         this.oldMdp = oldMdp;
     }
+    //endregion
 }

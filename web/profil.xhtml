@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="./layout.xhtml">
+    <ui:define name="content">
+        <h1>Profil</h1>
+        <!--region Info connexion-->
+        <p:panel header="Information de connexion" style="text-align: left" rendered="#{request.userPrincipal != null}" toggleable="true" toggleSpeed="500">
+            <h:panelGrid columns="2" cellpadding="10">
+                <h:form>
+                    <p:growl id="messages" autoUpdate="true"/>
+
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="AdresseMail" value="Adresse mail :"/>
+                        <p:inputText id="AdresseMail"
+                                     value="#{profilCtrl.user.adresseMail}"
+                                     size="40"
+                                     required="true"
+                                     requiredMessage="champ requis"
+                                     disabled="true">
+                            <f:validateLength minimum="3"/>
+                        </p:inputText>
+                        <p:outputLabel for="password" value="Mot de passe :"/>
+                        <p:password id="password"
+                                     value="#{profilCtrl.user.mdp}"
+                                     size="40"
+                                     required="true"
+                                     requiredMessage="champ requis"
+                                    match="passwordValid">
+                        <f:validateLength minimum="3"/>
+                        </p:password>
+                        <p:outputLabel for="passwordValid" value="Répétez le mot de passe :"/>
+                        <p:password id="passwordValid"
+                                     value="#{profilCtrl.user.mdp}"
+                                     size="40"
+                                     required="true"
+                                     requiredMessage="champ requis"
+                                     validatorMessage="3 caractères minimum">
+                            <f:validateLength minimum="3"/>
+                        </p:password>
+                    </h:panelGrid>
+                    <p:commandButton value="Modifier"
+                                     action="#{profilCtrl.saveMdp()}"
+                                     update="@form"/>
+                </h:form>
+            </h:panelGrid>
+        </p:panel>
+        <!--endregion-->
+        <!--region Coordonnées-->
+        <p:panel header="Coordonnées" style="text-align: left" rendered="#{request.userPrincipal != null}" toggleable="true" toggleSpeed="500"  collapsed="true">
+            <h:panelGrid columns="2" cellpadding="10">
+                <h:form>
+                    <p:growl id="messages2" autoUpdate="true"/>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="nom" value="Nom :"/>
+                        <p:inputText id="nom"
+                                     value="#{profilCtrl.user.nom}"
+                                     size="40"
+                                     required="true"
+                                     requiredMessage="champ requi"
+                                     validatorMessage="3 caractères minimum">
+                            <f:validateLength minimum="3"/>
+                        </p:inputText>
+                        <p:outputLabel for="prenom" value="Prenom :"/>
+                        <p:inputText id="prenom"
+                                     value="#{profilCtrl.user.prenom}"
+                                     size="40"
+                                     required="true"
+                                     requiredMessage="champ requi"
+                                     validatorMessage="3 caractères minimum">
+                            <f:validateLength minimum="3"/>
+                        </p:inputText>
+                        <p:outputLabel for="dateNaissance" value="Date de naissance :"/>
+                        <p:calendar id="dateNaissance"
+                                    maxdate="now"
+                                    value="#{profilCtrl.user.dateNaissance}"
+                                    required="true"
+                                    requiredMessage="La date de naissance est obligatoire"
+                                    showOn="button"
+                                    pattern="dd/MM/yyyy"
+                                    mask="99/99/9999"/>
+                        <p:outputLabel for="adresse" value="Adresse :"/>
+                        <p:inputTextarea id="adresse"
+                                     value="#{profilCtrl.user.adressePostal}"
+                                     size="40"
+                                     required="true"
+                                     requiredMessage="champ requi"
+                                     validatorMessage="3 caractères minimum">
+                            <f:validateLength minimum="3"/>
+                        </p:inputTextarea>
+                        <p:outputLabel for="codePostal" value="Code postal :"/>
+                        <p:inputText id="codePostal"
+                                     value="#{profilCtrl.user.codePostal}"
+                                     size="40"
+                                     required="true"
+                                     requiredMessage="champ requi"
+                                     validatorMessage="5 caractères attendu"
+                                     maxlength="5">
+                            <f:validateLength minimum="5" maximum="5"/>
+                        </p:inputText>
+                        <p:outputLabel for="ville" value="Ville :"/>
+                        <p:inputText id="ville"
+                                     value="#{profilCtrl.user.ville}"
+                                     size="40"
+                                     required="true"
+                                     requiredMessage="champ requi"
+                                     validatorMessage="3 caractères minimum">
+                            <f:validateLength minimum="3"/>
+                        </p:inputText>
+                        <p:outputLabel for="tel" value="Telephone :" />
+                        <p:inputMask id="tel"
+                                     value="#{profilCtrl.user.numTel}"
+                                     mask="99.99.99.99.99"
+                                     required="true"/>
+                        <p:commandButton value="Modifier"
+                                         action="#{profilCtrl.save()}"
+                                         update="@form"/>
+                    </h:panelGrid>
+                </h:form>
+            </h:panelGrid>
+        </p:panel>
+        <!--endregion-->
+        <!--region Param financier-->
+        <p:panel header="Paramètre financier" style="text-align: left" rendered="#{request.userPrincipal != null}" toggleable="true" toggleSpeed="500"  collapsed="true">
+            <h:panelGrid columns="2" cellpadding="10">
+                <h:form>
+                    <p:growl id="messages3" autoUpdate="true"/>
+
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="ca" value="Plafond annuel CA :"/>
+                        <p:inputNumber id="ca"
+                                     value="#{profilCtrl.user.chiffreAffaire}"
+                                     size="40"
+                                     required="true"
+                                     requiredMessage="champ requis"
+                                     symbol=" €"
+                                     symbolPosition="s"
+                                     decimalSeparator=",">
+                            <f:validateLength minimum="1"/>
+                        </p:inputNumber>
+                        <p:outputLabel for="charge" value="Taux de charges :"/>
+                        <p:inputNumber id="charge"
+                                     value="#{profilCtrl.user.tauxCharge}"
+                                     size="40"
+                                     required="true"
+                                     requiredMessage="champ requis"
+                                     decimalPlaces="0"
+                                     symbol="%"
+                                     symbolPosition="s">
+                        </p:inputNumber>
+                    </h:panelGrid>
+                    <p:commandButton value="Modifier"
+                                     action="#{profilCtrl.save()}"
+                                     update="@form"/>
+                </h:form>
+            </h:panelGrid>
+        </p:panel>
+        <!--endregion-->
+        <!--region Deconnexion-->
+        <p:panel header="Déconnexion" style="text-align: left" rendered="#{request.userPrincipal != null}">
+            <h:panelGrid columns="2" cellpadding="10">
+                <h:form>
+                    Connecté en tant que #{request.userPrincipal.name}
+                    <br />
+                    <p:commandButton value="Se déconnecter"
+                                     icon="fa fa-sign-out"
+                                     action="#{app.logout()}"/>
+                </h:form>
+            </h:panelGrid>
+        </p:panel>
+        <!--endregion-->
+    </ui:define>
+</ui:composition>
+
