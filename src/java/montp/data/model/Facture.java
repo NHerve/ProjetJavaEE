@@ -19,10 +19,12 @@ public class Facture extends GenericEntity {
     private Date dateEdition;
     @Column(nullable = false)
     private Date dateLimite;
-    private String typePaiement;
+    private Integer typePaiement;
     private Date datePaiement;
     @OneToMany(fetch = FetchType.EAGER)
     private List<LigneFacturation> listLigne;
+
+    //region GetterSetter
 
     @Override
     public Long getId() {
@@ -74,11 +76,11 @@ public class Facture extends GenericEntity {
         this.dateLimite = dateLimite;
     }
 
-    public String getTypePaiement() {
+    public Integer getTypePaiement() {
         return typePaiement;
     }
 
-    public void setTypePaiement(String typePaiement) {
+    public void setTypePaiement(Integer typePaiement) {
         this.typePaiement = typePaiement;
     }
 
@@ -97,4 +99,5 @@ public class Facture extends GenericEntity {
     public void setListLigne(List<LigneFacturation> listLigne) {
         this.listLigne = listLigne;
     }
+    //endregion
 }

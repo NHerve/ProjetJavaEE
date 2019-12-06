@@ -14,6 +14,11 @@ public class Projet extends GenericEntity{
     private String nom;
     private Integer statut;
 
+    @Override
+    public String toString() {
+        return  nom ;
+    }
+
     //region GetterSetter
 
     @Override

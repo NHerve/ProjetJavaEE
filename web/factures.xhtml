@@ -6,6 +6,125 @@
                 template="./layout.xhtml">
     <ui:define name="content">
         <h1>Liste des factures</h1>
+
+        <p:tabView id="tabView">
+            <!--region viewFacture-->
+            <p:tab title="Liste des Factures" id="listClient">
+
+            </p:tab>
+            <!--endregion-->
+            <!--region addFacture-->
+            <p:tab title="Ajouter Facture" id="tabAddFacture">
+                <h:panelGrid columns="2" cellpadding="10" id="panelAddFacture">
+                    <h:form id="formAddFacture">
+                        <p:growl id="messagesAddFacture" autoUpdate="true"/>
+                        <h:panelGrid columns="2" cellpadding="5">
+
+                            <p:outputLabel for="numFacture" value="Numéro de facture :"/>
+                            <p:inputText id="numFacture"
+                                         value="#{factureCtrl.facture.numFacture}"
+                                         size="40"
+                                         required="true"
+                                         requiredMessage="champ requis">
+                                <f:validateLength minimum="3"/>
+                            </p:inputText>
+
+                            <p:outputLabel for="projet" value="Nom du projet :" />
+                            <p:selectOneMenu id="projet"
+                                             value="#{factureCtrl.facture.projet}"
+                                             converter="projet">
+                                <f:selectItems value="#{factureCtrl.listProjet}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="statut" value="Statut :" />
+                            <p:selectOneMenu id="statut" value="#{factureCtrl.facture.statutFacture}" style="width:125px">
+                                <f:selectItem itemLabel="Editée" itemValue="0" />
+                                <f:selectItem itemLabel="Envoyée" itemValue="1" />
+                                <f:selectItem itemLabel="Payée" itemValue="2" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="dateEdit" value="Date d'edition' :"/>
+                            <p:calendar id="dateEdit"
+                                        maxdate="now"
+                                        value="#{factureCtrl.facture.dateEdition}"
+                                        required="true"
+                                        requiredMessage="La date d'edition est obligatoire"
+                                        showOn="button"
+                                        pattern="dd/MM/yyyy"
+                                        mask="99/99/9999"/>
+
+                            <p:outputLabel for="datePaiementLimite" value="Date de paiement limite :"/>
+                            <p:calendar id="datePaiementLimite"
+                                        value="#{factureCtrl.facture.dateLimite}"
+                                        required="true"
+                                        requiredMessage="La date de paiement limite est obligatoire"
+                                        showOn="button"
+                                        pattern="dd/MM/yyyy"
+                                        mask="99/99/9999"/>
+
+                            <p:outputLabel for="typePaiement" value="Type de paiement :" />
+                            <p:selectOneMenu id="typePaiement" value="#{factureCtrl.facture.typePaiement}" style="width:125px">
+                                <f:selectItem itemLabel="chèque" itemValue="0" />
+                                <f:selectItem itemLabel="virement" itemValue="1" />
+                                <f:selectItem itemLabel="paypal" itemValue="2" />
+                                <f:selectItem itemLabel="autre" itemValue="3" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="datePaiementEffectif" value="Date de paiement effectif :"/>
+                            <p:calendar id="datePaiementEffectif"
+                                        maxdate="now"
+                                        value="#{factureCtrl.facture.datePaiement}"
+                                        showOn="button"
+                                        pattern="dd/MM/yyyy"
+                                        mask="99/99/9999"/>
+
+                        </h:panelGrid>
+                        <h:form id="formLigneFacture">
+                            <p:growl id="msgs" showDetail="true"/>
+
+                            <p:dataTable id="tableLigneFacture" widgetVar="ligneFacture" var="ligneFacture" value="#{factureCtrl.listLigneFacture}" editable="true" style="margin-bottom:20px">
+                                <f:facet name="header">
+                                    Ligne de facture
+                                </f:facet>
+
+                                <p:column headerText="Libelle">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{ligneFacture.libelle}" /></f:facet>
+                                        <f:facet name="input"><p:inputText id="modelInput" value="#{ligneFacture.libelle}" style="width:100%"/></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Prix unitaire">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{ligneFacture.prixUni}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{ligneFacture.prixUni}" style="width:100%" label="Year"/></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="Quantite">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{ligneFacture.quantite}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{ligneFacture.quantite}" style="width:100%" label="Year"/></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+                            </p:dataTable>
+
+                            <div class="ui-g">
+                                <div class="ui-g-12">
+                                    <p:commandButton value="Add new row" styleClass="ui-priority-primary" process="@this"
+                                                     action="#{factureCtrl.onAddNew()}" oncomplete="PF('tableLigneFacture').addRow();"
+                                                     update="tableLigneFacture,formLigneFacture:msgs"/>
+                                </div>
+                            </div>
+                        </h:form>
+                        <p:commandButton value="Ajouter"
+                                         action="#{factureCtrl.add()}"
+                                         update="@form"/>
+                    </h:form>
+                </h:panelGrid>
+            </p:tab>
+            <!--endregion-->
+        </p:tabView>
     </ui:define>
 </ui:composition>
 

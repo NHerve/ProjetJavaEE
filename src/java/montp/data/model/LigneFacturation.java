@@ -14,6 +14,18 @@ public class LigneFacturation extends GenericEntity{
     @Column(nullable = false)
     private Integer quantite;
 
+    public LigneFacturation() {
+    }
+
+    public LigneFacturation(String libelle, Double prixUni, Integer quantite) {
+        this.libelle = libelle;
+        this.prixUni = prixUni;
+        this.quantite = quantite;
+    }
+
+
+    //region GetterSetter
+
     @Override
     public Long getId() {
         return id;
@@ -47,4 +59,5 @@ public class LigneFacturation extends GenericEntity{
     public void setQuantite(Integer quantite) {
         this.quantite = quantite;
     }
+    //endregion
 }
